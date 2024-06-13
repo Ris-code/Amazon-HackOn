@@ -1,6 +1,14 @@
 # Amazon-HackOn
 
 ## Code References
+
+- Quickstart: https://python.langchain.com/v0.1/docs/use_cases/chatbots/quickstart/
+- Memory Management: https://python.langchain.com/v0.1/docs/use_cases/chatbots/memory_management/
+- Retrieval: https://python.langchain.com/v0.1/docs/use_cases/chatbots/retrieval/
+- Tool Usage: https://python.langchain.com/v0.1/docs/use_cases/chatbots/tool_usage/
+- Conversational RAG: https://python.langchain.com/v0.2/docs/tutorials/qa_chat_history/
+- Build an Agent: https://python.langchain.com/v0.2/docs/tutorials/agents/
+
 RAG Implementation : https://colab.research.google.com/github/pinecone-io/examples/blob/master/learn/generation/langchain/rag-chatbot.ipynb
 
 ## Datasets
