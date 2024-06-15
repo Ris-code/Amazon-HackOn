@@ -3,44 +3,64 @@ from langchain_mistralai import ChatMistralAI
 from langchain.schema import Document
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_mistralai import MistralAIEmbeddings
-from dotenv import load_dotenv
 import time
 from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-
-load_dotenv()
-
-os.environ["MISTRAL_API_KEY"] = os.getenv("MISTRAL_API_KEY")
-os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_KEY")
+import env
 
 def document_split(data):
     # Initialize an empty list to store Document objects
-        documents = []
+    documents = []
 
-        # Convert dictionaries to Document objectsa
-        for user in data:
-            # Construct content and metadata for each user type
-            characteristics = ', '.join([f"{ch['attribute']}: {ch['value']}" for ch in user['characteristics']])
-            needs = ', '.join(user['needs'])
-            content = f"User Type: {user['user_type']}\nCharacteristics: {characteristics}\nNeeds: {needs}"
+    # Convert dictionaries to Document objectsa
+    for user in data:
+        # Construct content and metadata for each user type
+        characteristics = ', '.join([f"{ch['attribute']}: {ch['value']}" for ch in user['characteristics']])
+        needs = ', '.join(user['needs'])
+        content = f"User Type: {user['user_type']}\nCharacteristics: {characteristics}\nNeeds: {needs}"
 
-            metadata = {
-                "user_type": user["user_type"],
-                "age": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Age"),
-                "location": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Location"),
-                "visit_frequency": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Visit Frequency")
-            }
+        metadata = {
+            "user_type": user["user_type"],
+            "age": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Age"),
+            "location": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Location"),
+            "visit_frequency": next(ch["value"] for ch in user["characteristics"] if ch["attribute"] == "Visit Frequency")
+        }
 
-            documents.append(Document(page_content=content, metadata=metadata))
+        documents.append(Document(page_content=content, metadata=metadata))
 
-        # Initialize the text splitter
-        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    # Initialize the text splitter
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
-        # Split documents into chunks
-        all_splits = text_splitter.split_documents(documents)
+    # Split documents into chunks
+    all_splits = text_splitter.split_documents(documents)
 
-        return all_splits
+    return all_splits
 
+def pinecone_vector_store(customer_types):
+    index_name = "customer"  
+    pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
+
+    existing_indexes = [index_info["name"] for index_info in pc.list_indexes()]
+
+    if index_name not in existing_indexes:
+        pc.create_index(
+            name=index_name,
+            dimension=1024,
+            metric="cosine",
+            spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+        )
+        while not pc.describe_index(index_name).status["ready"]:
+            time.sleep(1)
+    else:
+        print("The index already exist so enter a new index name")
+
+    index = pc.Index(index_name)
+
+    docs = document_split(customer_types)
+
+    PineconeVectorStore.from_documents(docs, embedding=MistralAIEmbeddings(), index_name=index_name)
+
+     
 customer_types = [
     {
         "user_type": "Frequent Shoppers",
@@ -148,24 +168,4 @@ customer_types = [
     }
 ]
 
-index_name = "customer"  
-pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-
-existing_indexes = [index_info["name"] for index_info in pc.list_indexes()]
-
-if index_name not in existing_indexes:
-    pc.create_index(
-        name=index_name,
-        dimension=1024,
-        metric="cosine",
-        spec=ServerlessSpec(cloud="aws", region="us-east-1"),
-    )
-    while not pc.describe_index(index_name).status["ready"]:
-        time.sleep(1)
-
-index = pc.Index(index_name)
-
-docs = document_split(customer_types)
-
-docsearch = PineconeVectorStore.from_documents(docs, embedding=MistralAIEmbeddings(), index_name=index_name)
-
+pinecone_vector_store(customer_types)

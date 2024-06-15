@@ -1,15 +1,10 @@
 import os
 from langchain_mistralai import ChatMistralAI
 from langchain_mistralai import MistralAIEmbeddings
-from dotenv import load_dotenv
 import time
 from pinecone import Pinecone as pc
 from langchain_pinecone import Pinecone
-
-load_dotenv()
-
-os.environ["MISTRAL_API_KEY"] = os.getenv("MISTRAL_API_KEY")
-os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_KEY")
+import env
 
 class user_profile_train:
     def __init__(self, user_profile):
@@ -65,7 +60,7 @@ class user_profile_train:
 
         user_needs = []
         # Display the retrieved documents
-        for doc in range(len(docs)-1, -1, -1):
+        for doc in range(len(docs)-1, 0, -1):
             content = docs[doc].page_content
             # print(docs[doc].p_content.Needs)
             needs_start = content.find("Needs: ") + len("Needs: ")
@@ -73,30 +68,8 @@ class user_profile_train:
 
             # Splitting the needs into a list
             needs_list = [need.strip() for need in needs_section.split(",")]
-            # print(docs[doc])
-            # print("\n---\n")
+            
+            # listing all the user needs 
             user_needs.extend(needs_list)
         
         return user_needs
-
-user_profile = {
-    "Name": "John Doe",
-    "Age": 70,
-    "Gender": "Male",
-    "Location": "New York, NY, USA",
-    "Account Age": "3 years",
-    "Visit Frequency": "10 visits in the last 10 days",
-    "Purchase Frequency": "5 purchases in the last month",
-    "Average Purchase Value": "$50 per purchase",
-    "Cart Abandonment Rate": "3 abandoned carts in the last month",
-    "Engagement with Promotions": "Clicked on 3 promotional emails in the last month",
-    "Wishlist Activity": "Added 5 items to wishlist in the last month",
-    "Browsing History": ["Laptops", "Smartphones", "Books"],
-    "Subscription Status": "No",
-    "Preferred Payment Methods": ["Credit Card", "Mobile Wallet"]
-}
-
-user_train = user_profile_train(user_profile)
-user_needs = user_train.get_user_profile()
-
-print(user_needs)
