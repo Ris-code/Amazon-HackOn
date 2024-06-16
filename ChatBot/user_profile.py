@@ -59,6 +59,7 @@ class user_profile_train:
         docs = retriever.invoke(query)
 
         user_needs = []
+        user = []
         # Display the retrieved documents
         for doc in range(len(docs)-1, 0, -1):
             content = docs[doc].page_content
@@ -69,7 +70,40 @@ class user_profile_train:
             # Splitting the needs into a list
             needs_list = [need.strip() for need in needs_section.split(",")]
             
+            user_start = content.find("User Type: ") + len("User Type: ")
+            start = content.find("\n")
+
+            # print(user_start)
+            # print(start)
+            user_section = content[user_start:start]
+            # print(user_section)
+            
+            user.append(user_section)
             # listing all the user needs 
             user_needs.extend(needs_list)
+        # print(user)
         
-        return user_needs
+        return user_needs, user
+    
+# user_profile = {
+#     "Name": "John Doe",
+#     "Age": 70,
+#     "Gender": "Male",
+#     "Location": "New York, NY, USA",
+#     "Account Age": "3 years",
+#     "Visit Frequency": "10 visits in the last 10 days",
+#     "Purchase Frequency": "5 purchases in the last month",
+#     "Average Purchase Value": "$50 per purchase",
+#     "Cart Abandonment Rate": "3 abandoned carts in the last month",
+#     "Engagement with Promotions": "Clicked on 3 promotional emails in the last month",
+#     "Wishlist Activity": "Added 5 items to wishlist in the last month",
+#     "Browsing History": ["Laptops", "Smartphones", "Books"],
+#     "Subscription Status": "No",
+#     "Preferred Payment Methods": ["Credit Card", "Mobile Wallet"]
+# }
+
+# user_train = user_profile_train(user_profile)
+# user_needs, user = user_train.get_user_profile()
+
+# # print(user_needs)
+# print(user)

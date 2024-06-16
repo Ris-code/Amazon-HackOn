@@ -12,27 +12,29 @@ import env
 def document_split(questions, category):
     documents = []
 
-    content = f"Category: {category}\n"
-    question_meta = ""
+    # content = f"Category: {category}\n"
+    # question_meta = ""
     for qna_pair in questions:
         question = qna_pair["question"]
         answer = qna_pair["answer"]
-        content = content + f"Question: {question}\nAnswer:{answer}\n"
-        question_meta = question_meta + f"{question}\n" 
+        content = f"Category: {category}\nQuestion: {question}\nAnswer:\n{answer}"
+        metadata = {"category": category, "question": question}
+        documents.append(Document(page_content=content, metadata=metadata))
+
     
-    metadata = {"category": category, "question": question_meta}
+    # metadata = {"category": category, "question": question_meta}
         # category_questions.append(Document(page_content=content, metadata=metadata))
-    documents.append(Document(page_content=content, metadata=metadata))
+    # documents.append(Document(page_content=content, metadata=metadata))
 
         # documents.append(category_questions)
-    # print(documents)
+    print(documents)
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     all_splits = text_splitter.split_documents(documents)
 
     return all_splits
     
 def pinecone_vector_store(data, category):
-    index_name = "query-category"
+    index_name = "query-category-new"
     pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
 
     existing_indexes = [index_info["name"] for index_info in pc.list_indexes()]
@@ -465,4 +467,6 @@ query_category = {
 }
 
 for category, questions in query_category.items():
-    pinecone_vector_store(questions, category)
+    # pinecone_vector_store(questions, category)
+    document_split(questions, category)
+    break
