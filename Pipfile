@@ -14,6 +14,7 @@ tiktoken = "*"
 python-dotenv = "*"
 langchain-pinecone = "*"
 pinecone-client = "*"
+langchainhub = "*"
 
 [dev-packages]
 ipykernel = "*"
