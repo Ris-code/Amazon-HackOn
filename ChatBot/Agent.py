@@ -17,6 +17,7 @@ from langchain.agents import AgentExecutor
 from langchain import PromptTemplate
 from env import *
 from user_profile import *
+from tools import tool
 
 # Load environment variables
 load_dotenv()
@@ -49,34 +50,13 @@ def get_profile(user_profile):
     return user_needs, user_attributes, user_type
 
 user_needs, user_attributes, user_type = get_profile(user_profile)
-# Retrieve user profile and needs
-
-def setup_retriever_tool():
-    # Initialize Pinecone client
-    pc_client = pc(api_key=os.environ.get("PINECONE_API_KEY"))
-    index = pc_client.Index("query-category-new")
-
-    # Initialize vector store
-    vectorstore = Pinecone(index, embedding=MistralAIEmbeddings())
-    retriever = vectorstore.as_retriever(k=1)
-
-    # Create and return the retriever tool
-    retriever_tool = create_retriever_tool(
-        retriever,
-        "payment_query_search",
-        "Search for information related to payment queries. For any questions about Payment and payment methods, you must use this tool!"
-    )
-    return retriever_tool
-
-# Setup retriever tool
-retriever_tool = setup_retriever_tool()
 
 # Bind the tool to the model
-llm = llm.bind_tools([retriever_tool])
+llm = llm.bind_tools(tool)
 
 def create_prompt_template():
     template = """
-    As an Amazon customer service agent, your primary responsibility is to resolve all payment-related issues for customers. You have access to a specialized tool called 'payment_query_search,' which is designed to provide information regarding payment errors, methods, or processes. Whenever a user approaches you with a query related to payments, activate the 'payment_query_search' tool to fetch accurate and relevant information.
+    As an Amazon customer service agent, your primary responsibility is to resolve all payment-related issues for customers. You have access to a specialized tool called 'payment_query_search,' which is designed to provide information regarding payment errors, methods, or processes. Whenever a user approaches you with a query related to payments, activate the 'payment_query_search' tool to fetch accurate and relevant information. You also need to carefully consider the 'Amazon_policy' tool to answer the user question.
 
     Here is the prompt structure you should follow when responding to payment-related queries:
     ```
@@ -108,8 +88,8 @@ prompt_template = create_prompt_template()
 formatted_prompt = format_prompt(prompt_template, "Why there is delay in my refund?", user_attributes, user_needs, user_type)
 
 # Define agent
-agent = create_tool_calling_agent(llm, [retriever_tool], hub.pull("hwchase17/openai-functions-agent"))
-agent_executor = AgentExecutor(agent=agent, tools=[retriever_tool])
+agent = create_tool_calling_agent(llm, tool, hub.pull("hwchase17/openai-functions-agent"))
+agent_executor = AgentExecutor(agent=agent, tools=tool)
 
 # Invoke the agent with the formatted prompt
 response = agent_executor.invoke({"input": formatted_prompt})

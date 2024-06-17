@@ -5,19 +5,15 @@ name = "pypi"
 
 [packages]
 langchain = "*"
-langchain-openai = "*"
-langchain-chroma = "*"
 langchain-mistralai = "*"
-langchain-community = "*"
-faiss-cpu = "*"
-tiktoken = "*"
-python-dotenv = "*"
 langchain-pinecone = "*"
+langchain-community = "*"
 pinecone-client = "*"
 langchainhub = "*"
+python-dotenv = "*"
+tenacity = "==8.3.0"
 
 [dev-packages]
-ipykernel = "*"
 
 [requires]
 python_version = "3.10"
