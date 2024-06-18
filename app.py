@@ -247,6 +247,7 @@ import env
 client = MongoClient(os.environ.get("MONGO_CONNECTION_STRING"))
 db = client['amazon']
 collection = db['user_profiles']
+collection_prod = db['Products']
 
 def img_to_base64(image_path):
     with open(image_path, "rb") as img_file:
@@ -344,37 +345,7 @@ def set_custom_css():
     </style>
     """
     st.markdown(custom_css, unsafe_allow_html=True)
-
-def display_sidebar():
-    img_path = os.path.join(image, 'amazon-logo.png')
-    img_base64 = img_to_base64(img_path)
-
-    st.sidebar.markdown(
-        f'<img src="data:image/png;base64,{img_base64}" class="custom-sidebar-img" alt="Amazon Logo">',
-        unsafe_allow_html=True
-    )
-
-    main_choice = option_menu(
-        menu_title="",
-        options=["Home", "Dashboard", "About", "PayBot"],
-        icons=["house-fill", "file-bar-graph-fill", "info-circle-fill", "robot"],
-        menu_icon="cast",
-        default_index=0,
-        styles={
-            "container": {"background-color": "#141920", "margin-top": "-10px"},
-            "icon": {"color": "orange", "font-size": "25px"},
-            "nav-link": {
-                "font-size": "16px",
-                "text-align": "left",
-                "margin": "0px",
-                "padding": "10px",
-                "color": "white"
-            },
-            "nav-link-selected": {"background-color": "rgba(192,192,192, 0.2)", "color": "#ffffff"},
-        }
-    )
-    return main_choice
-
+    
 def display_home(user, items):
     st.markdown(f"<h1 style='text-align: left; color: white; margin-top: -20px'>Hey {user['Name']}, Welcome to Amazon !!</h1>", unsafe_allow_html=True)
     rows = [st.columns(3), st.columns(3)]
@@ -393,23 +364,46 @@ def display_home(user, items):
 
 def app(user):
     set_custom_css()
-    main_choice = display_sidebar()
+    
+    img_path = os.path.join(image, 'amazon-logo.png')
+    img_base64 = img_to_base64(img_path)
 
-    items = [
-        {"name": "Raymond Yellow Shirt", "price": "Rs 454", "image": "https://m.media-amazon.com/images/I/41B+TiDYZRL.jpg"},
-        {"name": "Noise Pulse Go", "price": "Rs 1,099", "image": "https://m.media-amazon.com/images/I/61akt30bJsL._SX679_.jpg"},
-        {"name": "Iphone 15 Pro Max", "price": "Rs 1,48,000", "image": "https://m.media-amazon.com/images/I/61Jrsu9d3-L._SX679_.jpg"},
-        {"name": "SPARX Mens Sx0706g", "price": "Rs 749", "image": "https://m.media-amazon.com/images/I/41BNwMRUaJL._SY695_.jpg"},
-        {"name": "ZAVERI PEARLS Necklace", "price": "Rs 410", "image": "https://m.media-amazon.com/images/I/71eaAiL-wjL._SY695_.jpg"},
-        {"name": "Body Maxx 78005 Dumbbell", "price": "Rs 1399", "image": "https://m.media-amazon.com/images/I/51cc+xTtHiL._SX679_.jpg"},
-    ]
+    st.sidebar.markdown(
+        f'<img src="data:image/png;base64,{img_base64}" class="custom-sidebar-img" alt="Amazon Logo">',
+        unsafe_allow_html=True
+    )
+
+    with st.sidebar:
+        main_choice = option_menu(
+            menu_title="",
+            options=["Home", "Dashboard", "About", "PayBot"],
+            icons=["house-fill", "file-bar-graph-fill", "info-circle-fill", "robot"],
+            menu_icon="cast",
+            default_index=0,
+            styles={
+                "container": {"background-color": "#141920", "margin-top": "-10px"},
+                "icon": {"color": "orange", "font-size": "25px"},
+                "nav-link": {
+                    "font-size": "16px",
+                    "text-align": "left",
+                    "margin": "0px",
+                    "padding": "10px",
+                    "color": "white"
+                },
+                "nav-link-selected": {"background-color": "rgba(192,192,192, 0.2)", "color": "#ffffff"},
+            }
+        )
 
     if main_choice == "Home":
+        items = collection_prod.find()
         display_home(user, items)
+
     elif main_choice == "Dashboard":
         st.write("Dashboard")
+
     elif main_choice == "About":
         st.write("About")
+        
     elif main_choice == "PayBot":
         with st.spinner("Please hold a moment ...."):
             chatbot.user(user)
