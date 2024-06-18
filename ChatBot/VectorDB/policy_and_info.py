@@ -8,7 +8,13 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.schema import Document
 import re
-from env import *
+from dotenv import load_dotenv
+
+load_dotenv()
+
+os.environ["MISTRAL_API_KEY"] = os.getenv("MISTRAL_API_KEY")
+os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
+os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
 # Define a function to split documents into chunks
 

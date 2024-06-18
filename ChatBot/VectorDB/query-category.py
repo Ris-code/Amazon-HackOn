@@ -6,7 +6,13 @@ from langchain_mistralai import MistralAIEmbeddings
 import time
 from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-import env
+from dotenv import load_dotenv
+
+load_dotenv()
+
+os.environ["MISTRAL_API_KEY"] = os.getenv("MISTRAL_API_KEY")
+os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
+os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
 # Define a function to split documents into chunks
 def document_split(questions, category):
