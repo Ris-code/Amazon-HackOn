@@ -47,5 +47,10 @@ retrieve_tool_2 = retrieve_tool("policy",
                                 topic="Amazon_policy", 
                                 description = "Search for amazon policies on payment REFUND, RETURN, REPLACEMENT, PRIVACY_NOTICE, CONDITION_OF_USE, SAFE_ONLINE_SHOPPING, AMAZON_PAY_SAFETY, CHECK_REFUND_STATUS, SECURITY_AND_PRIVACY, RETURN_PICKUP&SELF-SHIP_GUIDELINE, DAMAGE_DEFECTIVE_WRONG_PRODUCT_FAQ, SHIPPING_SPEED&CHARGES, GUARANTEED_SHIPPING_SPEEDSAND_CHARGES, POD, EMI, ACCEPTED_PAYMENT_METHODS, PAYMENT_ISSUES, RESOLVE_DECLINED_PAYMENT, AMAZON_PAY_LATER, TERM_AND_CONDITIONS, PAYMENT_PRICING_PROMOTION, UPI, AMAZON_PAY, AMAZON_PAY_BALANCE, NET_BANKING "
                                 )
+## Tool 3
+retrieve_tool_3 = retrieve_tool("pain-category", 
+                                topic="Customer-pain-point", 
+                                description = "Understand the pain of customer and the importance of the query. Using these parameters generate proper judgement for the users"
+                                )
 
-tool = [retrieve_tool_1, retrieve_tool_2]
+tool = [retrieve_tool_1, retrieve_tool_2, retrieve_tool_3]
