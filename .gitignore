@@ -1,5 +1,6 @@
 .env
 ChatBot/__pycache__/
+.streamlit/secrets.toml
 
 *.pyc
 *.pyo

@@ -12,6 +12,10 @@ pinecone-client = "*"
 langchainhub = "*"
 python-dotenv = "*"
 tenacity = "==8.3.0"
+streamlit = "*"
+streamlit-navigation-bar = "*"
+hydralit = "*"
+streamlit-option-menu = "*"
 
 [dev-packages]
 

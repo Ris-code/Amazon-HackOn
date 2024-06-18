@@ -85,25 +85,27 @@ class user_profile_train:
         
         return user_needs, user
     
-# user_profile = {
-#     "Name": "John Doe",
-#     "Age": 70,
-#     "Gender": "Male",
-#     "Location": "New York, NY, USA",
-#     "Account Age": "3 years",
-#     "Visit Frequency": "10 visits in the last 10 days",
-#     "Purchase Frequency": "5 purchases in the last month",
-#     "Average Purchase Value": "$50 per purchase",
-#     "Cart Abandonment Rate": "3 abandoned carts in the last month",
-#     "Engagement with Promotions": "Clicked on 3 promotional emails in the last month",
-#     "Wishlist Activity": "Added 5 items to wishlist in the last month",
-#     "Browsing History": ["Laptops", "Smartphones", "Books"],
-#     "Subscription Status": "No",
-#     "Preferred Payment Methods": ["Credit Card", "Mobile Wallet"]
-# }
+def fetch_user_attributes(id: str):
+        # Define user profile
+    user_profile = {
+        "Name": "Rishav",
+        "Age": 20,
+        "Gender": "Male",
+        "Location": "Noida, UP",
+        "Account Age": "3 years",
+        "Visit Frequency": "5 visits in the last 10 days",
+        "Purchase Frequency": "2 purchases in the last month",
+        "Average Purchase Value": "$1000 per purchase",
+        "Cart Abandonment Rate": "3 abandoned carts in the last month",
+        "Engagement with Promotions": "Clicked on 3 promotional emails in the last month",
+        "Wishlist Activity": "Added 5 items to wishlist in the last month",
+        "Browsing History": ["Laptops", "Smartphones", "Books"],
+        "Subscription Status": "No",
+        "Preferred Payment Methods": ["Credit Card", "Mobile Wallet", "Amazon Pay", "UPI", "Debit Card"]
+    }
 
-# user_train = user_profile_train(user_profile)
-# user_needs, user = user_train.get_user_profile()
 
-# # print(user_needs)
-# print(user)
+    user_attributes = [f"{key}: {value}" for key, value in user_profile.items()]
+    user_needs, user_type = user_profile_train(user_profile).get_user_profile()
+
+    return user_needs, user_attributes, user_type, user_profile["Name"]
