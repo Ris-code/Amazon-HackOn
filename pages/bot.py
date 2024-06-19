@@ -1,30 +1,27 @@
 import streamlit as st
 import asyncio
-from Agent import *
-from user_profile import *
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 import time
+import sys
+import os 
 
-def user(users):
-    user_needs, user_attributes, user_type, name = fetch_user_attributes(users)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ChatBot')))
 
-    global user_info_1, user_info_2, user_info_3, user_info_4  
+import Agent
 
-    user_info_1 = user_needs
-    user_info_2 = user_attributes
-    user_info_3 = user_type
-    user_info_4 = name
+def chat(user_profile):
 
-    print(1)
+    global user_info_1, user_info_2, user_info_3, user_info_4
 
-def chat():
-    # print(user_info_1)
-    print(2)
+    user_info_1 = user_profile[0]
+    user_info_2 = user_profile[1]
+    user_info_3 = user_profile[2]
+    user_info_4 = user_profile[3]
 
     st.markdown("<h1 style='text-align: center; color: white; margin-top: -20px'>Amazon PayBot</h1>", unsafe_allow_html=True)
-    print
+    # print
 
     with st.chat_message("assistant"):
         st.markdown(f"Hello {user_info_4}, I'm Amazon PayBot. Please feel free to ask any questions you have regarding payments.")
@@ -55,7 +52,7 @@ def chat():
 
         async def run_agent():
             # Asynchronously fetch response from the agent
-            response = await async_agent_call(user_info_1, user_info_2, user_info_3, prompt)
+            response = await Agent.async_agent_call(user_info_1, user_info_2, user_info_3, prompt)
             return response
         
         response = asyncio.run(run_agent())
@@ -81,5 +78,3 @@ def chat():
 
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-# if __name__ == "__main__":
-#     chat()
