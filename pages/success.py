@@ -58,7 +58,7 @@ def payment_success():
             </div>
     """, unsafe_allow_html=True)
 
-    if st.button("Back to Log In"):
-        st.switch_page("pages/login.py")
+    if st.button("Back to Home"):
+        st.switch_page("pages/home.py")
 
 payment_success()
