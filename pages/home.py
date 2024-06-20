@@ -238,6 +238,7 @@ def main():
     # else:
     if 'user' in st.session_state:
         user = st.session_state.user
+        print(user)
         app(user)
     else:
         st.switch_page("pages/login.py")

@@ -20,6 +20,8 @@ def chat(user_profile):
     user_info_3 = user_profile[2]
     user_info_4 = user_profile[3]
 
+    print("user_info:",user_info_4)
+
     st.markdown("<h1 style='text-align: center; color: white; margin-top: -20px'>Amazon PayBot</h1>", unsafe_allow_html=True)
     # print
 

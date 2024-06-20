@@ -1,14 +1,15 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 import os
 import pandas as pd
 import torch
 import torch.nn as nn
 
+# Paths and configuration setup
 image = os.path.join(os.path.dirname(__file__), '..', 'Images')
 path = os.path.join(os.path.dirname(__file__), '..', 'Payment Recommendation', 'recommendation-model', 'cnn_recommendation_model.pth')
 data_path = os.path.join(os.path.dirname(__file__), '..', 'Payment Recommendation', 'data', 'success_rate_new.csv')
 
+# Streamlit configuration
 st.set_page_config(
     page_title="Amazon",
     page_icon=os.path.join(image, 'logo.png'),
@@ -16,6 +17,7 @@ st.set_page_config(
     layout="wide",
 )
 
+# Define the CNN model class
 class PaymentMethodCNN(nn.Module):
     def __init__(self):
         super(PaymentMethodCNN, self).__init__()
@@ -45,6 +47,7 @@ class PaymentMethodCNN(nn.Module):
 # Load the model
 model = torch.load(path, map_location=torch.device('cpu'))
 
+# Function to predict the best payment method
 def predict_best_payment_method(model, payment_methods, payment_methods_data):
     assert len(payment_methods_data) == len(payment_methods), "Data for each payment method must be provided."
 
@@ -61,9 +64,12 @@ def predict_best_payment_method(model, payment_methods, payment_methods_data):
 
     return output
 
+# Function to recommend payment method based on item and user data
 def order(item, user):
     pay_methods = []
     pay_comp = []
+    pay_method_dict = {}
+
     df = pd.read_csv(data_path)
     success_rate = df["Success_Rate"].tolist()
 
@@ -71,35 +77,43 @@ def order(item, user):
         item_mt = item["payment_methods"][pay]
         user_mt = user["payment_usage"][pay]
         pay_methods.append(item_mt['method'])
-        # print(item_mt)
         pay_dict = {'cost': item_mt["additional_cost_percentage"], 'cashback': item_mt["cashback_percentage"], 'success_rate': success_rate[pay], 'user_history': user_mt["Usage Count"]}
+        pay_method_dict[item_mt['method']] = pay_dict
         pay_comp.append(pay_dict)
     
-    # print(pay_comp)
-    
     best_payment_method = predict_best_payment_method(model, pay_methods, pay_comp)
-    print(best_payment_method)
 
-    return best_payment_method.tolist()[0], pay_methods
+    return best_payment_method.tolist()[0], pay_methods, pay_method_dict
 
+# Function to format price
 def format_price(price):
     return price.replace(",", "")
 
+# Function to recommend payment method and display results
 def recommend(item, user):
-    recommended_order, pay_method = order(item, user)
-    print("recommended:", recommended_order)
-    print("pay method:", pay_method)
-     # Pair payment methods with their recommendation scores
+    recommended_order, pay_method, pay_method_dict = order(item, user)
+
+    # Pair payment methods with their recommendation scores
     payment_recommendation_pairs = list(zip(pay_method, recommended_order))
     
     # Sort the pairs by recommendation scores in descending order
     sorted_payment_methods = [method for method, score in sorted(payment_recommendation_pairs, key=lambda x: x[1], reverse=True)]
 
-    # Print the sorted list
-    print(sorted_payment_methods)
+    # Prepare icons for each payment method
+    # icon_dic = {
+    #     'Amazon Pay UPI': 'apay',
+    #     'Google Pay': 'gpay',
+    #     'PhonePe': 'ppay',
+    #     'Credit Card': 'cpay',
+    #     'Cash on Delivery': 'codpay',
+    #     'Debit Card': 'cpay',
+    #     'Net Banking': 'npay',
+    #     'EMI': 'epay'
+    # }
 
-    price_without_commas = format_price(item['price'].split()[1])
-    total_price = float(price_without_commas) + float(40)
+    # Display item details and billing information
+    price_without_commas = float(format_price(item['price'].split()[1]))
+    total_price = price_without_commas + float(40)
 
     col1, col2 = st.columns([1, 1])
 
@@ -138,145 +152,34 @@ def recommend(item, user):
 
     st.markdown("<hr style='margin: 20px 0;'>", unsafe_allow_html=True)
 
-    icon_dic = {'Amazon Pay UPI': 'amazon', 'Google Pay': 'google', 'PhonePe': 'phone', 'Credit Card': 'credit-card-fill', 'Cash on Delivery': 'cash', 'Debit Card': 'credit-card-2-front-fill', 'Net Banking': 'bank', 'EMI': 'cash-coin'}
-    icons = []
-    for i in sorted_payment_methods:
-        icons.append(icon_dic[i])
-
+    # Display payment options as radio buttons with icons
     with st.container(border=4):
         st.markdown("<h3 style='text-align: center;'>Payment Options</h3>", unsafe_allow_html=True)
 
-        main_choice = option_menu(
-            menu_title="",
-            options=sorted_payment_methods,
-            icons=icons,
-            menu_icon="cast",
-            default_index=0,
-            styles={
-                "container": {"background-color": "transparent", "margin-top": "10px"},
-                "icon": {"color": "orange", "font-size": "25px"},
-                "nav-link": {
-                    "font-size": "18px",
-                    "text-align": "left",
-                    "margin": "0px",
-                    "padding": "10px",
-                    "color": "white"
-                },
-                "nav-link-selected": {"background-color": "rgba(192,192,192, 0.2)", "color": "#ffffff"},
-            }
+        # main_choice = st.radio(
+        #     label="Select Payment Method",
+        #     options=sorted_payment_methods,
+        #     format_func=lambda x: f"<div style='display: flex; align-items: center;'><img src='{os.path.join(image, icon_dic[x] + '.png')}' style='height: 30px; width: 30px; object-fit: cover; margin-right: 10px;'>{x}</div>",
+        #     index=0
+        # )
+        # options=[f"<div style='display: flex; align-items: center;'><img src='{os.path.join(image, icon_dic[method] + '.png')}' style='height: 30px; width: 30px; object-fit: cover; margin-right: 10px;'>{method}</div>" for method in sorted_payment_methods],
+        option = st.selectbox(
+            "Payment Options",
+            sorted_payment_methods,
+            index=None,
+            placeholder="Select payment method...",
         )
 
+        # Store selected payment method in session state
+        if option in pay_method_dict:
+            if 'pay' not in st.session_state:
+                st.session_state.pay = pay_method_dict[option]
+                st.session_state.method = option
+            st.switch_page("pages/pay.py")
+        
+
+# Check if item and user are in session state, otherwise switch to login page
 if 'item' and 'user' in st.session_state:
     recommend(st.session_state.item, st.session_state.user)
 else:
     st.switch_page("pages/login.py")
-
-# recommend({
-#         "name": "iPhone 15 Pro Max",
-#         "price": "Rs 1,48,000",
-#         "image": "https://m.media-amazon.com/images/I/61Jrsu9d3-L._SX679_.jpg",
-#         "payment_methods": [
-#             {"method": "Amazon Pay UPI", "cashback_percentage": 20.0, "additional_cost_percentage": 0.8},
-#             {"method": "Google Pay", "cashback_percentage": 0.0, "additional_cost_percentage": 0.0},
-#             {"method": "PhonePe", "cashback_percentage": 13.5, "additional_cost_percentage": 0.0},
-#             {"method": "Credit Card", "cashback_percentage": 20.0, "additional_cost_percentage": 0.4},
-#             {"method": "Debit Card", "cashback_percentage": 10.0, "additional_cost_percentage": 0.3},
-#             {"method": "EMI", "cashback_percentage": 25.0, "additional_cost_percentage": 6.8},
-#             {"method": "Net Banking", "cashback_percentage": 0.0, "additional_cost_percentage": 0.0},
-#             {"method": "Cash on Delivery", "cashback_percentage": 5.0, "additional_cost_percentage": 2.0}
-#         ]
-#     },
-#     {
-#   "Name": "Rishav",
-#   "Age": 20,
-#   "Gender": "Male",
-#   "Location": "Noida, UP",
-#   "Account Age": "3 years",
-#   "Visit Frequency": "5 visits in the last 10 days",
-#   "Purchase Frequency": "4 purchases in the last month",
-#   "Average Purchase Value": "Rs 3000 per purchase",
-#   "Cart Abandonment Rate": "3 abandoned carts in the last month",
-#   "Engagement with Promotions": "Clicked on 3 promotional emails in the last month",
-#   "Wishlist Activity": "Added 5 items to wishlist in the last month",
-#   "Browsing History": [
-#     "Laptops",
-#     "Smartphones",
-#     "Books"
-#   ],
-#   "Subscription Status": "No",
-#   "Preferred Payment Methods": [
-#     "Credit Card",
-#     "Amazon Pay",
-#     "UPI",
-#     "Debit Card"
-#   ],
-#   "user_id": "rishav@gmail.com",
-#   "Previous Orders": [
-#     {
-#       "Item Name": "Laptop",
-#       "Cost": "Rs 50,000",
-#       "Payment Method": "Credit Card",
-#       "Additional Cost": "Rs 2",
-#       "Cashback": "Rs 400",
-#       "Transaction ID": "afc24751-917c-4b01-a55f-f1876441968a"
-#     },
-#     {
-#       "Item Name": "Smartphone",
-#       "Cost": "Rs 20,000",
-#       "Payment Method": "Amazon Pay",
-#       "Additional Cost": "Rs 0",
-#       "Cashback": "Rs 1000",
-#       "Transaction ID": "79dbadef-7ec6-4fa4-9d03-08f8eed9469d"
-#     },
-#     {
-#       "Item Name": "Headphones",
-#       "Cost": "Rs 5000",
-#       "Payment Method": "Debit Card",
-#       "Additional Cost": "Rs 100",
-#       "Cashback": "Rs 200",
-#       "Transaction ID": "8aa2c964-4dd6-4e06-9fa0-fc5218cade1c"
-#     },
-#     {
-#       "Item Name": "Fitness Tracker",
-#       "Cost": "Rs 3000",
-#       "Payment Method": "UPI",
-#       "Additional Cost": "Rs 0",
-#       "Cashback": "Rs 150",
-#       "Transaction ID": "e229b57f-d327-4ce0-9ee7-c6dbd4679553"
-#     }
-#   ],
-#   "payment_usage": [
-#     {
-#       "Payment Method": "Amazon Pay UPI",
-#       "Usage Count": 12
-#     },
-#     {
-#       "Payment Method": "Google Pay",
-#       "Usage Count": 25
-#     },
-#     {
-#       "Payment Method": "PhonePe",
-#       "Usage Count": 13
-#     },
-#     {
-#       "Payment Method": "Credit Card",
-#       "Usage Count": 14
-#     },
-#     {
-#       "Payment Method": "Debit Card",
-#       "Usage Count": 10
-#     },
-#     {
-#       "Payment Method": "EMI",
-#       "Usage Count": 0
-#     },
-#     {
-#       "Payment Method": "Net Banking",
-#       "Usage Count": 2
-#     },
-#     {
-#       "Payment Method": "Cash on Delivery",
-#       "Usage Count": 3
-#     }
-#   ]
-# })
