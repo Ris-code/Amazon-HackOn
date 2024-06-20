@@ -72,7 +72,7 @@ def set_custom_css():
         }
         .custom-image {
             width: 100%;  
-            height: auto;
+            height: 100%;
             max-height: 300px;  
             object-fit: cover;
             margin-bottom: 10px;
