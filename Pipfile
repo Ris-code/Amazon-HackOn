@@ -17,6 +17,8 @@ streamlit-navigation-bar = "*"
 hydralit = "*"
 streamlit-option-menu = "*"
 pymongo = "*"
+torch = "*"
+pandas = "*"
 
 [dev-packages]
 

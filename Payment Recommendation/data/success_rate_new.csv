@@ -1,0 +1,9 @@
+Methods,Success_Rate
+Amazon Pay,0.95
+Google Pay,0.90
+PhonePe,0.90
+Credit Card,0.85 
+Debit Card,0.70
+EMI,0.65
+Net Banking,0.70 
+Cash on Delivery,1

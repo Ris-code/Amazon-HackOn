@@ -215,13 +215,7 @@ def main():
         initial_sidebar_state="expanded",
         layout="wide",
     )
-
-    # if 'user' not in st.session_state:
-    #     st.session_state.user = None
-
-    # if st.session_state.user:
-    #     # app(st.session_state.user)
-    # else:
+    
     login()
 
 if __name__ == "__main__":

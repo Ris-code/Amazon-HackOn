@@ -26,8 +26,9 @@ def img_to_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-def on_buy_now_click(item):
-    st.write(f"You clicked 'Buy Now' for {item['name']}")
+# def on_buy_now_click(item):
+#     # st.write(f"You clicked 'Buy Now' for {item['name']}")
+#     recom.recommend(item)
 
 def set_custom_css():
     custom_css = """
@@ -119,21 +120,38 @@ def set_custom_css():
     """
     st.markdown(custom_css, unsafe_allow_html=True)
     
-def display_home(user, items):
-    st.markdown(f"<h1 style='text-align: left; color: white; margin-top: -20px'>Hey {user['Name']}, Welcome to Amazon !!</h1>", unsafe_allow_html=True)
-    rows = [st.columns(3), st.columns(3)]
+def display_home(user, items_cursor):
+    # Convert cursor to list to get the length and iterate over items
+    items = list(items_cursor)
+    len_items = len(items)
 
-    for idx, (col, item) in enumerate(zip(rows[0] + rows[1], items)):
-        with col:
-            with st.container(border=2):
-                st.markdown(f'<img src="{item["image"]}" class="custom-image">', unsafe_allow_html=True)
-                st.markdown(f'<div class="item-name">{item["name"]}</div>', unsafe_allow_html=True)
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.markdown(f'<div class="price">{item["price"]}</div>', unsafe_allow_html=True)
-                with col2:
-                    if st.button("Buy Now", key=f"buy_now_{idx}", use_container_width=True):
-                        on_buy_now_click(item)
+    st.markdown(f"<h1 style='text-align: left; color: white; margin-top: -20px'>Hey {user['Name']}, Welcome to Amazon !!</h1>", unsafe_allow_html=True)
+    
+    # Calculate the number of rows needed
+    rows = [st.columns(3) for _ in range(len_items // 3)]
+    if len_items % 3:
+        rows.append(st.columns(len_items % 3))
+
+    # Display items in the calculated rows
+    item_index = 0
+    for row in rows:
+        for col in row:
+            if item_index < len_items:
+                item = items[item_index]
+                with col:
+                    with st.container(border=2):
+                        st.markdown(f'<img src="{item["image"]}" class="custom-image">', unsafe_allow_html=True)
+                        st.markdown(f'<div class="item-name">{item["name"]}</div>', unsafe_allow_html=True)
+                        col1, col2 = st.columns([1, 2])
+                        with col1:
+                            st.markdown(f'<div class="price">{item["price"]}</div>', unsafe_allow_html=True)
+                        with col2:
+                            if st.button("Buy Now", key=f"buy_now_{item_index}", use_container_width=True):
+                                if 'item' not in st.session_state:
+                                    st.session_state.item = item
+                                # on_buy_now_click(item)
+                                st.switch_page("pages/recommendation.py")
+                item_index += 1
 
 @st.cache_data
 def user_scarp(_user):
