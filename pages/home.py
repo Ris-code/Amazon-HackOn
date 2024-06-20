@@ -208,7 +208,7 @@ def app(user):
         user_scarp(user)
 
     elif main_choice == "Dashboard":
-        st.write("Dashboard")
+        st.switch_page("pages/finance_manage.py")
 
     elif main_choice == "About":
         st.write("About")

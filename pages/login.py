@@ -180,7 +180,7 @@ def img_to_base64(image_path):
 #      
 #       chatbot.chat()
 
-@st.cache_data
+# @st.cache_data  
 def find_user(email):
     user = collection.find_one({"user_id": email})
     return user
@@ -199,14 +199,18 @@ def login():
             email = st.text_input("Enter your email:")
             if st.button("Login", key="login_button"):
                 with st.spinner('Verifying user...'):
-                    if 'user' not in st.session_state:
-                        st.session_state.user = None
-                        st.session_state.user = find_user(email)
-                    if st.session_state.user:
+                    user = find_user(email)
+
+                    if user:
+                        if 'user' not in st.session_state:
+                            st.session_state.user = None
+                        st.session_state.user = user
+                         
                         st.success("Login successful!")
                         st.switch_page("pages/home.py")
                     else:
                         st.error("User ID does not exist")
+                        
 
 def main():
     st.set_page_config(

@@ -19,6 +19,7 @@ streamlit-option-menu = "*"
 pymongo = "*"
 torch = "*"
 pandas = "*"
+plotly = "*"
 
 [dev-packages]
 
