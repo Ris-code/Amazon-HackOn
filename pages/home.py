@@ -201,9 +201,9 @@ def app(user):
         items = collection_prod.find()
         display_home(user, items)
             
-        # if 'user_profile' not in st.session_state:
-        #     st.session_state.user_profile = user_scarp(user)
-        user_scarp(user)
+        if 'user_profile' not in st.session_state:
+            st.session_state.user_profile = user_scarp(user)
+        # user_scarp(user)
 
     elif main_choice == "Dashboard":
         st.switch_page("pages/finance_manage.py")
@@ -212,13 +212,8 @@ def app(user):
         st.write("About")
 
     elif main_choice == "PayBot":
-        # print(1)
-        # st.switch_page("pages/chatbot.py")
-        d1 = user_scarp(user)
-        bot.chat(d1)
-        # with st.spinner("Please hold a moment ...."):
-            # chatbot.user(user)
-            # chatbot.chat()
+        # d1 = user_scarp(user)
+        bot.chat()
 
 def main():
     st.set_page_config(

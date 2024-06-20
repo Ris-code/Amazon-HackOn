@@ -15,10 +15,15 @@ def chat(user_profile):
 
     global user_info_1, user_info_2, user_info_3, user_info_4
 
-    user_info_1 = user_profile[0]
-    user_info_2 = user_profile[1]
-    user_info_3 = user_profile[2]
-    user_info_4 = user_profile[3]
+    if 'user_profile' in st.session_state:
+        user_info_1 = st.session_state.user_profile[0]
+        user_info_2 = st.session_state.user_profile[1]
+        user_info_3 = st.session_state.user_profile[2]
+        user_info_4 = st.session_state.user_profile[3]
+    # user_info_1 = user_profile[0]
+    # user_info_2 = user_profile[1]
+    # user_info_3 = user_profile[2]
+    # user_info_4 = user_profile[3]
 
     print("user_info:",user_info_4)
 
