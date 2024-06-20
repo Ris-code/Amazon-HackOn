@@ -199,7 +199,7 @@ def login():
             )
             st.markdown(f"<h1 style='text-align: center; color: white; margin-top: -20px'>Amazon Login</h1>", unsafe_allow_html=True)
             email = st.text_input("Enter your email:")
-            if st.button("Login", key="login_button"):
+            if st.button("Login", key="login_button", use_container_width = True):
                 with st.spinner('Verifying user...'):
                     user = find_user(email)
 

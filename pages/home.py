@@ -80,17 +80,19 @@ def set_custom_css():
         .price {
             font-size: 17px;
             font-weight: bold;
+            background-color: orange;
             color: black;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 5px;
-            background-color: white;
+            margin-top: 10px;
+            margin-bottom: 10px;
             border-radius: 5px;
             width: 100%;
             height: 100%;
             flex: 1;
+            padding: 5px;
         }
         .item-name {
             font-size: 16px;
@@ -101,7 +103,6 @@ def set_custom_css():
             color: black;
             border: 1px solid #ddd;  
             border-radius: 5px;
-            margin-bottom: 10px;
         }
         .custom-buy-now {
             background-color: orange;
@@ -142,15 +143,12 @@ def display_home(user, items_cursor):
                     with st.container(border=2):
                         st.markdown(f'<img src="{item["image"]}" class="custom-image">', unsafe_allow_html=True)
                         st.markdown(f'<div class="item-name">{item["name"]}</div>', unsafe_allow_html=True)
-                        col1, col2 = st.columns([1, 2])
-                        with col1:
-                            st.markdown(f'<div class="price">{item["price"]}</div>', unsafe_allow_html=True)
-                        with col2:
-                            if st.button("Buy Now", key=f"buy_now_{item_index}", use_container_width=True):
-                                if 'item' not in st.session_state:
-                                    st.session_state.item = item
-                                # on_buy_now_click(item)
-                                st.switch_page("pages/recommendation.py")
+                        st.markdown(f'<div class="price">{item["price"]}</div>', unsafe_allow_html=True)
+                        if st.button("Buy Now", key=f"buy_now_{item_index}", use_container_width=True):
+                            if 'item' not in st.session_state:
+                                st.session_state.item = item
+                            # on_buy_now_click(item)
+                            st.switch_page("pages/recommendation.py")
                 item_index += 1
 
 @st.cache_data
