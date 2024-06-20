@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'C
 
 import Agent
 
-def chat(user_profile):
+def chat():
 
     global user_info_1, user_info_2, user_info_3, user_info_4
 
