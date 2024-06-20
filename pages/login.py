@@ -14,7 +14,7 @@ image = os.path.join(os.path.dirname(__file__), '..', 'Images')
 # import chatbot
 import env
 
-client = MongoClient(os.environ.get("MONGO_CONNECTION_STRING"))
+client = MongoClient(env.MONGO_KEY)
 db = client['amazon']
 collection = db['user_profiles']
 collection_prod = db['Products']
@@ -192,7 +192,9 @@ def login():
             img_path = os.path.join(image, 'amazon-logo.png')
             img_base64 = img_to_base64(img_path)
             st.markdown(
-                f"<img src='data:image/png;base64,{img_base64}' style='height: 200px; display: flex; align-items: center; justify-content: center; margin-top: -40px;  margin-bottom: -60px; margin-left: 110px;'>",
+                f"""<div style='display: flex; align-items: center; justify-content: center; margin-top: -40px; margin-bottom: -50px'>
+                <img src='data:image/png;base64,{img_base64}' style='object-cover: True; height: 200px;'/>
+                </div>""",
                 unsafe_allow_html=True
             )
             st.markdown(f"<h1 style='text-align: center; color: white; margin-top: -20px'>Amazon Login</h1>", unsafe_allow_html=True)
@@ -205,7 +207,7 @@ def login():
                         if 'user' not in st.session_state:
                             st.session_state.user = None
                         st.session_state.user = user
-                         
+
                         st.success("Login successful!")
                         st.switch_page("pages/home.py")
                     else:
