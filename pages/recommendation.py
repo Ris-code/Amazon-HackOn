@@ -156,27 +156,46 @@ def recommend(item, user):
     with st.container(border=4):
         st.markdown("<h3 style='text-align: center;'>Payment Options</h3>", unsafe_allow_html=True)
 
-        # main_choice = st.radio(
-        #     label="Select Payment Method",
-        #     options=sorted_payment_methods,
-        #     format_func=lambda x: f"<div style='display: flex; align-items: center;'><img src='{os.path.join(image, icon_dic[x] + '.png')}' style='height: 30px; width: 30px; object-fit: cover; margin-right: 10px;'>{x}</div>",
-        #     index=0
-        # )
-        # options=[f"<div style='display: flex; align-items: center;'><img src='{os.path.join(image, icon_dic[method] + '.png')}' style='height: 30px; width: 30px; object-fit: cover; margin-right: 10px;'>{method}</div>" for method in sorted_payment_methods],
-        option = st.selectbox(
-            "Payment Options",
-            sorted_payment_methods,
-            index=None,
-            placeholder="Select payment method...",
-        )
+        data, select = st.columns(2)
+            # Create a DataFrame for payment method details
+        with data:
+            payment_details = {
+            'Payment Method': [],
+            'Cashback (%)': [],
+            'Additional Cost (%)': [],
+            'Total Cost (Rs)': []
+            }
 
-        # Store selected payment method in session state
-        if option in pay_method_dict:
-            if 'pay' not in st.session_state:
-                st.session_state.pay = pay_method_dict[option]
-                st.session_state.method = option
-            st.switch_page("pages/pay.py")
-        
+            for method in sorted_payment_methods:
+                cashback_amount = (pay_method_dict[method]['cashback'] / 100) * total_price
+                additional_cost_amount = (pay_method_dict[method]['cost'] / 100) * total_price
+                final_total = total_price - cashback_amount + additional_cost_amount
+                
+                payment_details['Payment Method'].append(method)
+                payment_details['Cashback (%)'].append(pay_method_dict[method]['cashback'])
+                payment_details['Additional Cost (%)'].append(pay_method_dict[method]['cost'])
+                payment_details['Total Cost (Rs)'].append(round(final_total, 2))
+
+            df_payment_details = pd.DataFrame(payment_details)
+
+            # Display the DataFrame
+            st.dataframe(df_payment_details)
+
+        with select:
+            option = st.selectbox(
+                "Payment Options",
+                sorted_payment_methods,
+                index=None,
+                placeholder="Select payment method...",
+            )
+
+            # Store selected payment method in session state
+            if option in pay_method_dict:
+                if 'pay' not in st.session_state:
+                    st.session_state.pay = pay_method_dict[option]
+                    st.session_state.method = option
+                st.switch_page("pages/pay.py")
+            
 
 # Check if item and user are in session state, otherwise switch to login page
 if 'item' and 'user' in st.session_state:
