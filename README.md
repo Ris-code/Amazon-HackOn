@@ -1,5 +1,7 @@
 # Amazon-HackOn
 
+### For Login you can use email_id: rishav@gmail.com
+
 ## Code References
 
 - Quickstart: https://python.langchain.com/v0.1/docs/use_cases/chatbots/quickstart/
