@@ -160,7 +160,7 @@ def display_home(user, items_cursor):
                             st.session_state.current_page = "Recommendation"
                 item_index += 1    
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def user_scarp(_user):
     print(1)
     user_needs, user_attributes, user_type, user_name = user_profile.fetch_user_attributes(_user)
