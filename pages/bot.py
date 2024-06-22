@@ -15,6 +15,11 @@ def chat():
 
     global user_info_1, user_info_2, user_info_3, user_info_4
 
+    user_info_1 = None
+    user_info_2 = None
+    user_info_3 = None
+    user_info_4 = None
+    
     if 'user_profile' in st.session_state:
         user_info_1 = st.session_state.user_profile[0]
         user_info_2 = st.session_state.user_profile[1]

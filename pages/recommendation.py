@@ -100,16 +100,16 @@ def recommend(item, user):
     sorted_payment_methods = [method for method, score in sorted(payment_recommendation_pairs, key=lambda x: x[1], reverse=True)]
 
     # Prepare icons for each payment method
-    # icon_dic = {
-    #     'Amazon Pay UPI': 'apay',
-    #     'Google Pay': 'gpay',
-    #     'PhonePe': 'ppay',
-    #     'Credit Card': 'cpay',
-    #     'Cash on Delivery': 'codpay',
-    #     'Debit Card': 'cpay',
-    #     'Net Banking': 'npay',
-    #     'EMI': 'epay'
-    # }
+    icon_dic = {
+        'Amazon Pay UPI': 'https://i.ibb.co/dtM3x9b/logo.png',
+        'Google Pay': 'https://i.ibb.co/N1CGK4Q/gpay.png',
+        'PhonePe': 'https://i.ibb.co/PCj4LZC/ppay.png',
+        'Credit Card': 'https://i.ibb.co/P6txX9Q/cpay.png',
+        'Cash on Delivery': 'https://i.ibb.co/bNQCTrs/codpay.png',
+        'Debit Card': 'https://i.ibb.co/P6txX9Q/cpay.png',
+        'Net Banking': 'https://i.ibb.co/DzpFJTX/npay.png',
+        'EMI': 'https://i.ibb.co/sjqd4QW/epay.png',
+    }
 
     # Display item details and billing information
     price_without_commas = float(format_price(item['price'].split()[1]))
@@ -182,6 +182,18 @@ def recommend(item, user):
             st.dataframe(df_payment_details)
 
         with select:
+            st.markdown(
+                f"""
+                <div style='border-radius: 10px; border: 3px solid orange; padding : 10px; margin-bottom: 40px;'>
+                <h3 style='margin-left: 10px;'>Recommended</h3>
+                <div style='display: flex; justify-content: center; align-items: center; margin-bottom: 10px;'>
+                    <img src={icon_dic[sorted_payment_methods[0]]} style='width: 80px; height: 80px; object-fit: cover; background-color: white;'>
+                    <span style='font-size: 30px; font-weight: 400px; margin-left: 10px;'>{sorted_payment_methods[0]}</span>
+                </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
             option = st.selectbox(
                 "Payment Options",
                 sorted_payment_methods,
