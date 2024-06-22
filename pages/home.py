@@ -207,10 +207,11 @@ def app(user):
 
     if main_choice == "Home":
         items = collection_prod.find()
-        display_home(user, items)
-            
         if 'user_profile' not in st.session_state:
             st.session_state.user_profile = user_scarp(user)
+        
+        display_home(user, items)
+        
         # user_scarp(user)
 
     elif main_choice == "Dashboard":
