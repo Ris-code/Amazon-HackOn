@@ -2,6 +2,32 @@
 
 ### For Login you can use email_id: rishav@gmail.com
 
+# Local Setup
+```{bash}
+git clone --branch test --single-branch https://github.com/Ris-code/Amazon-HackOn.git 
+```
+```{bash}
+cd Amazon-HackOn 
+```
+```{bash}
+pipenv shell 
+```
+```{bash}
+pipenv install 
+```
+```{bash}
+streamlit run app.py 
+```
+
+Store the secrets by creating ```secrets.toml``` in ```.streamlit``` directory. Keep all API keys in it.
+
+```{bash}
+MISTRAL_API_KEY = ""
+PINECONE_API_KEY = ""
+HF_TOKEN = ""
+MONGO_CONNECTION_STRING = ""
+```
+
 ## Code References
 
 - Quickstart: https://python.langchain.com/v0.1/docs/use_cases/chatbots/quickstart/
