@@ -125,7 +125,8 @@ def display_home(user, items_cursor):
     # Convert cursor to list to get the length and iterate over items
     items = list(items_cursor)
     len_items = len(items)
-
+    if 'user_profile' not in st.session_state:
+            st.session_state.user_profile = user_scarp(user)
     # if 'item' in st.session_state:
     #     del st.session_state['item']
     # st.session_state.item = None
@@ -207,10 +208,11 @@ def app(user):
 
     if main_choice == "Home":
         items = collection_prod.find()
-        if 'user_profile' not in st.session_state:
-            st.session_state.user_profile = user_scarp(user)
         
         display_home(user, items)
+
+        # if 'user_profile' not in st.session_state:
+        #     st.session_state.user_profile = user_scarp(user)
         
         # user_scarp(user)
 
