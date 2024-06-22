@@ -125,9 +125,19 @@ def display_home(user, items_cursor):
     # Convert cursor to list to get the length and iterate over items
     items = list(items_cursor)
     len_items = len(items)
+    if 'user_profile' not in st.session_state:
+            st.session_state.user_profile = user_scarp(user)
+    # if 'item' in st.session_state:
+    #     del st.session_state['item']
+    # st.session_state.item = None
 
     st.markdown(f"<h1 style='text-align: left; color: white; margin-top: -20px'>Hey {user['Name']}, Welcome to Amazon !!</h1>", unsafe_allow_html=True)
     
+       # Clear the selected item from session state if returning to the home page
+    if st.session_state.get("current_page") != "Home":
+        st.session_state["current_page"] = "Home"
+        if 'item' in st.session_state:
+            del st.session_state['item']
     # Calculate the number of rows needed
     rows = [st.columns(3) for _ in range(len_items // 3)]
     if len_items % 3:
@@ -145,13 +155,12 @@ def display_home(user, items_cursor):
                         st.markdown(f'<div class="item-name">{item["name"]}</div>', unsafe_allow_html=True)
                         st.markdown(f'<div class="price">{item["price"]}</div>', unsafe_allow_html=True)
                         if st.button("Buy Now", key=f"buy_now_{item_index}", use_container_width=True):
-                            if 'item' not in st.session_state:
-                                st.session_state.item = item
-                            # on_buy_now_click(item)
-                            st.switch_page("pages/recommendation.py")
-                item_index += 1
+                            # if 'item' not in st.session_state:
+                            st.session_state.item = item
+                            st.session_state.current_page = "Recommendation"
+                item_index += 1    
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def user_scarp(_user):
     print(1)
     user_needs, user_attributes, user_type, user_name = user_profile.fetch_user_attributes(_user)
@@ -199,10 +208,12 @@ def app(user):
 
     if main_choice == "Home":
         items = collection_prod.find()
+        
         display_home(user, items)
-            
-        if 'user_profile' not in st.session_state:
-            st.session_state.user_profile = user_scarp(user)
+
+        # if 'user_profile' not in st.session_state:
+        #     st.session_state.user_profile = user_scarp(user)
+        
         # user_scarp(user)
 
     elif main_choice == "Dashboard":
@@ -229,12 +240,20 @@ def main():
     # if st.session_state.user:
     #     # app(st.session_state.user)
     # else:
+    # if 'item' in st.session_state:
+    #     st.switch_page("pages/recommendation.py")
+
     if 'user' in st.session_state:
         user = st.session_state.user
         print(user)
         app(user)
     else:
         st.switch_page("pages/login.py")
+    
+        # Redirect to recommendation page if item is set
+    if st.session_state.get("current_page") == "Recommendation" and 'item' in st.session_state:
+        st.switch_page("pages/recommendation.py")
+
 
 if __name__ == "__main__":
     main()
