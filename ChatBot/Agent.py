@@ -49,6 +49,7 @@ async def async_agent_call(user_needs, user_attributes, user_type, question):
         - Activate the 'payment_query_search' tool to fetch accurate and relevant information for any payment-related query.
         - Use the 'Amazon_policy' tool to answer questions about Amazon policies.
         - For order confirmations, request the transaction ID and use the 'order_confirmation' tool.
+        - If the transaction ID is not found respond as order is not yet confirmed and give assurance to the customer.
         - For queries related to financial data, use the 'financial_management' tool.
         - Utilize the 'Customer-pain-point' tool to gauge the seriousness and emotions of the customer and respond accordingly.
 
