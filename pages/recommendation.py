@@ -101,7 +101,7 @@ def recommend(item, user):
 
     # Prepare icons for each payment method
     icon_dic = {
-        'Amazon Pay UPI': 'https://i.ibb.co/dtM3x9b/logo.png',
+        'Amazon Pay UPI': 'https://i.ibb.co/cQKWMQm/logo.png',
         'Google Pay': 'https://i.ibb.co/N1CGK4Q/gpay.png',
         'PhonePe': 'https://i.ibb.co/PCj4LZC/ppay.png',
         'Credit Card': 'https://i.ibb.co/P6txX9Q/cpay.png',
