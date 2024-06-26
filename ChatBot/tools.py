@@ -21,6 +21,10 @@ from langchain.agents import AgentExecutor
 from langchain import PromptTemplate
 from env import *
 from user_profile import *
+import pandas as pd
+from langchain_community.utilities import SQLDatabase
+from sqlalchemy import create_engine
+from langchain_community.agent_toolkits import create_sql_agent
 
 def retrieve_tool(index, topic, description):
     # Initialize Pinecone client
@@ -57,4 +61,57 @@ retrieve_tool_3 = retrieve_tool("pain-category",
                                 description = "Understand the pain of customer and the importance of the query. Using these parameters generate proper judgement for the users"
                                 )
 
-tool = [retrieve_tool_1, retrieve_tool_2, retrieve_tool_3]
+@tool
+def order_confirmation(transaction_id: str):
+    """
+    Check if the given transaction ID is present in the user's previous orders.
+
+    Args:
+    transaction_id (str): The transaction ID to check.
+
+    Returns:
+    tuple: A tuple containing the order details and a confirmation message if the transaction ID is found.
+    str: A message indicating that the order is not yet confirmed if the transaction ID is not found.
+    """
+    user = st.session_state.user
+    orders = user['previous_orders']
+
+    for order in orders:
+        if order["Transaction ID"] == transaction_id:
+            return order, "Your order is confirmed"
+    
+    return "Your order is not yet confirmed, please wait"
+
+@tool
+def financial_management(question: str):
+    """
+    Fetch the user's financial data based on the provided question.
+
+    This tool interacts with the SQL tool to retrieve financial information such as 
+    user spendings on different item categories and savings details. The data includes 
+    order details such as Order ID, Product Name, Product Category, MRP, Price for 
+    Customer, Savings, Payment Method, Monthly Payment, Duration (months), Order Date, 
+    and Order Month.
+
+    Args:
+    question (str): The financial management question to query the SQL tool with.
+
+    Returns:
+    str: The output result from the SQL tool based on the input question.
+    """
+    llm = ChatMistralAI(model="mistral-large-latest")
+
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'Automated Budgeting Solution', 'customer_orders.csv')
+    df = pd.read_csv(data_path)
+
+    engine = create_engine("sqlite:///customer_orders.db")
+    df.to_sql("customer_order", engine, index=False)
+    db = SQLDatabase(engine=engine)
+
+    sql_tool = create_sql_agent(llm, db=db, agent_type="tool-calling", verbose=True)
+    
+    result = sql_tool.invoke({"input": question})
+    return result['output']
+
+
+tool = [retrieve_tool_1, retrieve_tool_2, retrieve_tool_3, order_confirmation, financial_management]

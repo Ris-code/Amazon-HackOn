@@ -22,6 +22,7 @@ def find_user(email):
     user = collection.find_one({"user_id": email})
     return user
 
+
 def login():
     col1, col2, col3 = st.columns(3)
     with col2:
@@ -39,6 +40,7 @@ def login():
             if st.button("Login", key="login_button", use_container_width = True):
                 with st.spinner('Verifying user...'):
                     user = find_user(email)
+                    # user = user_get(email)
 
                     if user:
                         if 'user' not in st.session_state:

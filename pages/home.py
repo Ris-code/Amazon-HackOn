@@ -244,8 +244,9 @@ def main():
     #     st.switch_page("pages/recommendation.py")
 
     if 'user' in st.session_state:
+        print("test")
         user = st.session_state.user
-        print(user)
+        # t = user_get(user)
         app(user)
     else:
         st.switch_page("pages/login.py")
