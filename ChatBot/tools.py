@@ -26,9 +26,9 @@ from langchain_community.utilities import SQLDatabase
 from sqlalchemy import create_engine
 from langchain_community.agent_toolkits import create_sql_agent
 
-def retrieve_tool(index, topic, description):
+def retrieve_tool(index, topic, description, pinecone_key=os.environ.get("PINECONE_API_KEY")):
     # Initialize Pinecone client
-    pc_client = pc(api_key=os.environ.get("PINECONE_API_KEY"))
+    pc_client = pc(api_key=pinecone_key)
     Index = pc_client.Index(index)
 
     # Initialize vector store
@@ -47,7 +47,7 @@ def retrieve_tool(index, topic, description):
 ## Tool 1
 retrieve_tool_1 = retrieve_tool("query-category-new", 
                                 topic="payment_query_search", 
-                                description="Search for information related to payment queries. For any questions about Payment and payment methods, you must use this tool!"
+                                description="Search for information related to payment queries. For any questions about Payment and payment methods, you must use this tool!",
                                 )
 
 ## Tool 2
@@ -60,7 +60,18 @@ retrieve_tool_3 = retrieve_tool("pain-category",
                                 topic="Customer-pain-point", 
                                 description = "Understand the pain of customer and the importance of the query. Using these parameters generate proper judgement for the users"
                                 )
-
+## Tool 4
+retrieve_tool_4 = retrieve_tool("amazon-pay-faqs",
+                                topic = "Amazon-Pay-FAQs",
+                                description = "Search for amazon pay related questions",
+                                pinecone_key=PINECONE_API_KEY_ACCOUNT_2
+                                )
+## Tool 5
+retrieve_tool_5 = retrieve_tool("amazon-services",
+                                topic = "Amazon-Pay-Services",
+                                description = "Amazon Pay provides various services like SMART STORES, CAR AND BIKE INSURANCE, TRAVEL TICKET BOOKINGS, AMAZON PAY UPI, AMAZON LATER PAY, SMALL AND MEDIUM BUSINESS OWNERS USE AMAZON PAY to ease the life of customers as aell as the merchants",
+                                pinecone_key=PINECONE_API_KEY_ACCOUNT_2
+                                )
 @tool
 def order_confirmation(transaction_id: str):
     """
@@ -114,4 +125,10 @@ def financial_management(question: str):
     return result['output']
 
 
-tool = [retrieve_tool_1, retrieve_tool_2, retrieve_tool_3, order_confirmation, financial_management]
+tool = [retrieve_tool_1, 
+        retrieve_tool_2, 
+        retrieve_tool_3, 
+        retrieve_tool_4, 
+        retrieve_tool_5, 
+        order_confirmation, 
+        financial_management]
