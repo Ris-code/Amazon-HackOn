@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# os.environ["PINECONE_API_KEY_ASHU"] = os.getenv("PINECONE_API_KEY_ASHU")
+os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY_ASHU")
 
 def document_split(documents, chunk_size=500, chunk_overlap=0):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
@@ -27,7 +27,7 @@ def split(documents, chunk_size=1000, chunk_overlap=0):
 
 def pinecone_vector_store(docs):
     index_name = "prime-info"
-    pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY_ASHU"))
+    pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
 
     existing_indexes = [index_info["name"] for index_info in pc.list_indexes()]
 

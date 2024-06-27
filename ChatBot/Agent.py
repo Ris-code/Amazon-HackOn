@@ -54,7 +54,7 @@ async def async_agent_call(user_needs, user_attributes, user_type, question):
         - For Amazon Pay related queries use the tool 'Amazon-Pay-FAQs'.
         - For queries related to financial data, use the 'financial_management' tool.
         - Utilize the 'Customer-pain-point' tool to gauge the seriousness and emotions of the customer and respond accordingly.
-        - Utilize the 'prime-members' tool to answer the questions about Amazon Prime Memebership , queries and subscriptions.
+        - Utilize the 'Prime-Members' tool to answer the questions about Amazon Prime Membership , queries and subscriptions.
 
         **Prompt Structure**:
         ```

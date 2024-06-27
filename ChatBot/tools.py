@@ -72,6 +72,12 @@ retrieve_tool_5 = retrieve_tool("amazon-services",
                                 description = "Amazon Pay provides various services like SMART STORES, CAR AND BIKE INSURANCE, TRAVEL TICKET BOOKINGS, AMAZON PAY UPI, AMAZON LATER PAY, SMALL AND MEDIUM BUSINESS OWNERS USE AMAZON PAY to ease the life of customers as aell as the merchants",
                                 pinecone_key=PINECONE_API_KEY_ACCOUNT_2
                                 )
+## Tool 6
+retrieve_tool_6 = retrieve_tool("prime-info", 
+                                topic= "Prime-Members",
+                                description= "Search for comprehensive information related to Amazon Prime membership, including benefits such as Prime Video, Prime Music, Prime Reading, shipping benefits, eligible items, promotional codes, terms and conditions, membership management, fees, recurring payments, and FAQs. This tool covers all aspects of Amazon Prime to help users understand and manage their Prime membership effectively.",
+                                pinecone_key=PINECONE_API_KEY_ASHU
+                                )
 @tool
 def order_confirmation(transaction_id: str):
     """
@@ -129,6 +135,7 @@ tool = [retrieve_tool_1,
         retrieve_tool_2, 
         retrieve_tool_3, 
         retrieve_tool_4, 
-        retrieve_tool_5, 
+        retrieve_tool_5,
+        retrieve_tool_6,
         order_confirmation, 
         financial_management]
