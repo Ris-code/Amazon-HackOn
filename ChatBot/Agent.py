@@ -50,6 +50,7 @@ async def async_agent_call(user_needs, user_attributes, user_type, question):
         - Use the 'Amazon_policy' tool to answer questions about Amazon policies.
         - Use 'Amazon-Pay-Services-Faqs' tool for all the questions related to amazon pay services.
         - Use the tool 'Amazon-Pay-Services' for the queries related to Amazon Pay provided services.
+        - Use 'Amazon-AWS-Billing-FAQs' tool for the queries related to billings and payments in Amazon web services (AWS).
         - For order confirmations, request the transaction ID and use the 'order_confirmation' tool.
         - If the transaction ID is not found respond as order is not yet confirmed and give assurance to the customer.
         - For Amazon Pay related queries use the tool 'Amazon-Pay-FAQs'.
