@@ -1,51 +1,51 @@
 Order ID,Product Name,Product Category,MRP,Price for Customer,Savings,Payment Method,Monthly Payment,Duration (months),Order Date,Order Month
-1,Dishwasher,Home & Kitchen,5582.1,5293.98,288.1200000000008,Net Banking,,,2023-03-03,March
-2,Yoga Mat,Sports & Outdoors,6097.59,3497.64,2599.9500000000003,Google Pay,,,2024-02-20,February
-3,Toilet Paper,Health & Household,18710.28,12038.12,6672.159999999998,Debit Card,,,2024-04-03,April
-4,Jacket,Fashion,6272.97,5273.13,999.8400000000001,Amazon Pay UPI,,,2024-06-04,June
-5,Lego Set,Toys & Games,3914.61,3671.52,243.09000000000015,Net Banking,,,2024-01-21,January
-6,Camera,Electronics,19812.1,10514.32,9297.779999999999,Credit Card,,,2024-03-20,March
-7,Vitamins,Health & Household,16454.6,13709.28,2745.319999999998,Debit Card,,,2023-07-04,July
-8,Car Battery,Automotive,1126.54,945.73,180.80999999999995,Debit Card,,,2022-09-22,September
-9,Laptop,Electronics,14713.17,11401.28,3311.8899999999994,Debit Card,,,2023-09-11,September
-10,Engine Oil,Automotive,16309.05,12728.44,3580.6099999999988,Net Banking,,,2022-10-11,October
-11,Microwave Oven,Home & Kitchen,6646.31,6354.94,291.3700000000008,Debit Card,,,2023-04-11,April
-12,Smartphone,Electronics,15004.86,14460.48,544.380000000001,Amazon Pay UPI,,,2024-06-04,June
-13,Bread,Grocery,5803.95,3028.29,2775.66,Debit Card,,,2024-05-22,May
-14,Car Battery,Automotive,4024.15,3572.61,451.53999999999996,PhonePe,,,2023-10-26,October
-15,Moisturizer,Beauty & Personal Care,2772.16,2064.55,707.6099999999997,Debit Card,,,2022-10-09,October
-16,Engine Oil,Automotive,4644.11,4281.92,362.1899999999996,Debit Card,,,2022-07-05,July
-17,Camera,Electronics,1381.56,1217.24,164.31999999999994,Debit Card,,,2022-10-15,October
-18,Bread,Grocery,15798.89,14419.86,1379.0299999999988,Google Pay,,,2024-04-18,April
-19,Hair Dryer,Beauty & Personal Care,5702.81,3964.97,1737.8400000000006,Net Banking,,,2023-09-28,September
-20,Vitamins,Health & Household,17873.59,9203.29,8670.3,Cash on Delivery,,,2023-01-13,January
-21,Engine Oil,Automotive,14207.16,13338.61,868.5499999999993,EMI,3334.65,8.0,2023-03-17,March
-22,Camera,Electronics,6219.2,4902.57,1316.63,Google Pay,,,2023-12-28,December
-23,Dishwasher,Home & Kitchen,3258.9,2813.05,445.8499999999999,Debit Card,,,2023-06-18,June
-24,Non-Fiction,Books,5446.69,3232.24,2214.45,Credit Card,,,2024-04-13,April
-25,Vacuum Cleaner,Home & Kitchen,13031.68,7278.93,5752.75,Net Banking,,,2023-05-23,May
-26,Disinfectant Wipes,Health & Household,353.35,216.31,137.04000000000002,PhonePe,,,2022-07-27,July
-27,Coffee Maker,Home & Kitchen,15923.44,13702.81,2220.630000000001,Amazon Pay UPI,,,2024-04-01,April
-28,Headphones,Electronics,16448.15,10867.84,5580.310000000001,Cash on Delivery,,,2023-04-15,April
-29,Chicken Breast,Grocery,14409.5,11324.77,3084.7299999999996,PhonePe,,,2023-06-18,June
-30,Fantasy,Books,4612.62,2751.23,1861.3899999999999,PhonePe,,,2022-10-08,October
-31,Science Fiction,Books,16392.81,15473.49,919.3200000000015,Credit Card,,,2024-03-25,March
-32,Engine Oil,Automotive,3257.52,1807.31,1450.21,Cash on Delivery,,,2023-06-01,June
-33,Science Fiction,Books,8747.45,6591.17,2156.2800000000007,Amazon Pay UPI,,,2023-06-18,June
-34,Camera,Electronics,10780.44,10572.24,208.20000000000073,Debit Card,,,2023-02-01,February
-35,Toilet Paper,Health & Household,16526.91,15169.33,1357.58,PhonePe,,,2023-01-07,January
-36,Non-Fiction,Books,11239.56,6952.23,4287.33,Google Pay,,,2023-07-21,July
-37,Vacuum Cleaner,Home & Kitchen,13902.14,11161.37,2740.7699999999986,Credit Card,,,2022-12-26,December
-38,Biography,Books,9197.44,8330.77,866.6700000000001,Google Pay,,,2024-03-25,March
-39,Bread,Grocery,18151.28,10325.8,7825.48,Amazon Pay UPI,,,2024-05-28,May
-40,Car Battery,Automotive,966.6,886.56,80.04000000000008,Credit Card,,,2023-05-27,May
-41,Toilet Paper,Health & Household,3333.17,1867.21,1465.96,Cash on Delivery,,,2024-06-08,June
-42,T-shirt,Fashion,5456.67,2739.99,2716.6800000000003,EMI,685.0,12.0,2022-09-09,September
-43,Board Game,Toys & Games,8498.89,4564.7,3934.1899999999996,Amazon Pay UPI,,,2023-06-06,June
-44,Jacket,Fashion,10262.21,8696.91,1565.2999999999993,Cash on Delivery,,,2022-09-04,September
-45,Shampoo,Beauty & Personal Care,16141.84,9489.22,6652.620000000001,Amazon Pay UPI,,,2023-12-13,December
-46,Board Game,Toys & Games,1160.64,1123.46,37.180000000000064,Credit Card,,,2023-10-29,October
-47,Fantasy,Books,12044.39,11059.92,984.4699999999993,Amazon Pay UPI,,,2023-05-07,May
-48,Shampoo,Beauty & Personal Care,15652.56,12508.45,3144.1099999999988,EMI,2084.74,8.0,2024-01-05,January
-49,Microwave Oven,Home & Kitchen,14645.19,13410.81,1234.380000000001,Net Banking,,,2023-08-18,August
-50,Doll,Toys & Games,15355.02,9952.16,5402.860000000001,Google Pay,,,2023-05-20,May
+1,Dumbbells,Sports & Outdoors,13355.43,7337.81,6017.62,Debit Card,,,2023-09-22,September
+2,Car Cover,Automotive,15776.85,11118.26,4658.59,EMI,926.52,3.0,2024-06-22,June
+3,Blender,Home & Kitchen,13996.98,9226.18,4770.799999999999,Amazon Pay UPI,,,2024-01-04,January
+4,Puzzle,Toys & Games,4130.69,3259.66,871.0299999999997,Net Banking,,,2024-03-31,March
+5,Tennis Racket,Sports & Outdoors,9596.21,4893.04,4703.169999999999,Net Banking,,,2023-06-26,June
+6,Chicken Breast,Grocery,9174.61,6389.63,2784.9800000000005,Cash on Delivery,,,2023-09-08,September
+7,Dumbbells,Sports & Outdoors,5912.16,5872.95,39.210000000000036,Credit Card,,,2023-10-24,October
+8,Tire Inflator,Automotive,9483.51,5680.2,3803.3100000000004,Google Pay,,,2023-11-17,November
+9,Yoga Mat,Sports & Outdoors,16438.55,12353.06,4085.49,EMI,1372.56,11.0,2023-08-22,August
+10,Bread,Grocery,3340.18,2296.3,1043.8799999999997,Debit Card,,,2024-01-10,January
+11,Smartwatch,Electronics,2968.3,2954.39,13.91000000000031,Debit Card,,,2024-04-29,April
+12,Hair Dryer,Beauty & Personal Care,18688.87,13815.67,4873.199999999999,Google Pay,,,2024-06-08,June
+13,Car Cover,Automotive,6055.92,5496.35,559.5699999999997,PhonePe,,,2024-01-25,January
+14,Engine Oil,Automotive,13563.37,8279.9,5283.470000000001,Google Pay,,,2024-02-13,February
+15,Jeans,Fashion,10046.27,5472.5,4573.77,Credit Card,,,2023-08-24,August
+16,Smartwatch,Electronics,2366.92,2006.99,359.93000000000006,Credit Card,,,2023-07-15,July
+17,Tennis Racket,Sports & Outdoors,18009.92,15331.88,2678.039999999999,Amazon Pay Later,1277.6566666666665,12.0,2023-11-20,November
+18,Bicycle,Sports & Outdoors,10502.25,8033.61,2468.6400000000003,Cash on Delivery,,,2024-01-22,January
+19,Smartphone,Electronics,15707.56,13125.18,2582.379999999999,PhonePe,,,2024-02-28,February
+20,Board Game,Toys & Games,18310.99,14285.07,4025.920000000002,PhonePe,,,2023-09-25,September
+21,Blender,Home & Kitchen,4109.63,2304.48,1805.15,Amazon Pay Later,2304.48,1.0,2023-09-17,September
+22,Moisturizer,Beauty & Personal Care,19119.14,13987.96,5131.18,Amazon Pay Later,1165.6633333333332,12.0,2023-07-14,July
+23,Hair Dryer,Beauty & Personal Care,12323.48,6554.9,5768.58,Net Banking,,,2024-03-18,March
+24,Organic Milk,Grocery,15663.52,9612.1,6051.42,Amazon Pay Later,801.0083333333333,12.0,2024-06-05,June
+25,Running Shoes,Sports & Outdoors,15489.88,8297.51,7192.369999999999,Debit Card,,,2023-10-01,October
+26,Vitamins,Health & Household,9975.27,6398.23,3577.040000000001,Amazon Pay Later,533.1858333333333,12.0,2023-08-20,August
+27,Microwave Oven,Home & Kitchen,9673.16,7218.55,2454.6099999999997,Debit Card,,,2024-04-13,April
+28,Smartwatch,Electronics,13538.01,10730.1,2807.91,Google Pay,,,2024-01-14,January
+29,Running Shoes,Sports & Outdoors,15303.95,12963.82,2340.130000000001,Amazon Pay Later,1080.3183333333334,12.0,2024-05-26,May
+30,Smartphone,Electronics,12075.34,9503.1,2572.24,Credit Card,,,2024-01-28,January
+31,Jeans,Fashion,10235.76,10195.25,40.51000000000022,Amazon Pay Later,849.6041666666666,12.0,2023-07-23,July
+32,Action Figure,Toys & Games,10214.07,8537.93,1676.1399999999994,EMI,853.79,3.0,2024-04-21,April
+33,Coffee Maker,Home & Kitchen,12808.77,10980.66,1828.1100000000006,Net Banking,,,2024-03-28,March
+34,Car Battery,Automotive,9832.14,5678.15,4153.99,Amazon Pay Later,473.1791666666666,12.0,2023-11-10,November
+35,Blender,Home & Kitchen,19381.76,15458.85,3922.909999999998,EMI,1717.65,9.0,2023-09-20,September
+36,Lego Set,Toys & Games,4439.27,2900.67,1538.6000000000004,Amazon Pay UPI,,,2024-02-06,February
+37,Disinfectant Wipes,Health & Household,11859.31,8565.55,3293.76,PhonePe,,,2024-06-04,June
+38,Action Figure,Toys & Games,17688.65,15867.82,1820.8300000000017,Credit Card,,,2023-07-16,July
+39,Car Cover,Automotive,16458.58,11610.34,4848.240000000002,Debit Card,,,2023-11-27,November
+40,Shampoo,Beauty & Personal Care,12797.75,9787.45,3010.2999999999993,Google Pay,,,2023-06-30,June
+41,Car Cover,Automotive,7804.4,4528.59,3275.8099999999995,Google Pay,,,2023-12-22,December
+42,Bicycle,Sports & Outdoors,17516.32,11822.29,5694.029999999999,Amazon Pay Later,985.1908333333334,12.0,2024-02-07,February
+43,Sneakers,Fashion,789.09,453.7,335.39000000000004,Amazon Pay UPI,,,2024-06-09,June
+44,Chicken Breast,Grocery,12172.18,11306.11,866.0699999999997,Net Banking,,,2024-04-14,April
+45,Board Game,Toys & Games,10640.68,6140.09,4500.59,Cash on Delivery,,,2024-02-22,February
+46,Chicken Breast,Grocery,16554.55,9831.43,6723.119999999999,Google Pay,,,2024-05-13,May
+47,Lipstick,Beauty & Personal Care,4755.5,4643.01,112.48999999999978,Debit Card,,,2023-09-19,September
+48,Organic Milk,Grocery,16338.33,9381.47,6956.860000000001,Amazon Pay UPI,,,2024-02-22,February
+49,Car Cover,Automotive,6178.94,3448.1,2730.8399999999997,EMI,574.68,5.0,2023-12-04,December
+50,Bicycle,Sports & Outdoors,14939.17,13994.31,944.8600000000006,Google Pay,,,2024-03-21,March
