@@ -12,31 +12,57 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'C
 import Agent
 
 def chat():
-
     global user_info_1, user_info_2, user_info_3, user_info_4
 
     user_info_1 = None
     user_info_2 = None
     user_info_3 = None
     user_info_4 = None
-    
     if 'user_profile' in st.session_state:
         user_info_1 = st.session_state.user_profile[0]
         user_info_2 = st.session_state.user_profile[1]
         user_info_3 = st.session_state.user_profile[2]
         user_info_4 = st.session_state.user_profile[3]
-    # user_info_1 = user_profile[0]
-    # user_info_2 = user_profile[1]
-    # user_info_3 = user_profile[2]
-    # user_info_4 = user_profile[3]
 
-    print("user_info:",user_info_4)
+    print("user_info:", user_info_4)
 
     st.markdown("<h1 style='text-align: center; color: white; margin-top: -20px'>Amazon PayBot</h1>", unsafe_allow_html=True)
-    # print
 
+    
+    button_dic = {"aws_billing": "AWS Billing", 
+                  "amz_pay": "Amazon Pay Services", 
+                  "amz_prime": "Amazon Prime services",
+                  "amz_ecommerce": "Amazon Ecommerce Services"
+                  }
+    
     with st.chat_message("assistant"):
-        st.markdown(f"Hello {user_info_4}, I'm Amazon PayBot. Please feel free to ask any questions you have regarding payments.")
+        st.markdown(f"Hello {user_info_4}, I'm Amazon PayBot. I can assist you with billing and payment queries related to any Amazon service listed below.")
+                # Apply custom CSS for buttons
+        st.markdown("""
+            <style>
+            .stButton>button {
+                background-color: rgba(255,179,71,1);
+                color: black;
+                border-radius: 20px;
+                font-weight: 200;
+                font-size: 12px;
+                text-align: center;
+                cursor: pointer;
+            }
+            .stButton>button :hover{
+                background-color: white;
+                border-radius: 20px;
+                padding: 2px;
+                color: black;    
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        aws_billing = st.button("AWS Billing")
+        amz_pay = st.button("Amazon Pay Services")
+        amz_prime = st.button("Amazon Prime services")
+        amz_ecommerce = st.button("Amazon Ecommerce Services")
+
 
     # Initialize chat history
     if "messages" not in st.session_state:
@@ -47,11 +73,7 @@ def chat():
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # React to user input
-    if prompt := st.chat_input("How can I help you ?"):
-        # Display user message in chat message container
-        st.chat_message("user").markdown(prompt)
-
+    def output(prompt):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -90,3 +112,31 @@ def chat():
 
         st.session_state.messages.append({"role": "assistant", "content": response})
 
+
+    if aws_billing:
+        prompts = f"Have queries regarding {button_dic['aws_billing']}"
+        st.chat_message("user").markdown(prompts)
+        output(prompts)
+
+    if amz_pay:
+        prompts = f"Have queries regarding {button_dic['amz_pay']}"
+        st.chat_message("user").markdown(prompts)
+        output(prompts)
+
+    if amz_prime:
+        prompts = f"Have queries regarding {button_dic['amz_prime']}"
+        st.chat_message("user").markdown(prompts)
+        output(prompts)
+
+    if amz_ecommerce:
+        prompts = f"Have queries regarding {button_dic['amz_ecommerce']}"
+        st.chat_message("user").markdown(prompts)
+        output(prompts)
+ 
+    # React to user input
+    if prompt := st.chat_input("How can I help You"):
+        # Display user message in chat message container
+        st.chat_message("user").markdown(prompt)
+        output(prompt)
+        
+# chat()
