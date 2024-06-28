@@ -111,7 +111,12 @@ def chat():
 
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-
+        # React to user input
+    if prompt := st.chat_input("How can I help You"):
+        # Display user message in chat message container
+        st.chat_message("user").markdown(prompt)
+        output(prompt)
+        
     if aws_billing:
         prompts = f"Have queries regarding {button_dic['aws_billing']}"
         st.chat_message("user").markdown(prompts)
@@ -131,11 +136,6 @@ def chat():
         prompts = f"Have queries regarding {button_dic['amz_ecommerce']}"
         st.chat_message("user").markdown(prompts)
         output(prompts)
- 
-    # React to user input
-    if prompt := st.chat_input("How can I help You"):
-        # Display user message in chat message container
-        st.chat_message("user").markdown(prompt)
-        output(prompt)
+
         
 # chat()
