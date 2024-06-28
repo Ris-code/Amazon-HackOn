@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import plotly.graph_objs as go
 import pandas as pd
 import pages.plot as pt
+import numpy as np
 import plotly.express as px
 
 image = os.path.join(os.path.dirname(__file__), '..', 'Images')
@@ -165,56 +166,106 @@ def display_budget_and_spendings():
         st.plotly_chart(fig_yearly)
 
 # Function to display EMI analysis
-def display_emi_analysis():
-    st.title("EMI Analysis")
-
-    # Filter EMI orders
-    emi_df = df[df['Payment Method'] == 'EMI'].copy()
-
-    if emi_df.empty:
-        st.info("No EMI orders found.")
-        return
-
-    # Calculate EMI details
-    current_date = datetime.now()
-    emi_df['Duration (months)'] = emi_df['Duration (months)'].fillna(0).astype(int)
-    emi_df['Monthly Payment'] = emi_df['Monthly Payment'].fillna(0).astype(float)
-    emi_df['Order Date'] = pd.to_datetime(emi_df['Order Date'])
-    emi_df['Months Passed'] = emi_df['Order Date'].apply(lambda x: (current_date.year - x.year) * 12 + current_date.month - x.month)
-
-    emi_df['Amount Paid'] = emi_df.apply(lambda row: min(row['Months Passed'], row['Duration (months)']) * row['Monthly Payment'], axis=1)
-    emi_df['Amount Left'] = emi_df['Price for Customer'] - emi_df['Amount Paid']
-    emi_df['Interest Paid'] = emi_df['Amount Paid'] * 0.1  # Assuming 10% interest rate on amount paid
-    emi_df['Interest Left'] = emi_df['Amount Left'] * 0.1  # Assuming 10% interest rate on amount left
-
-    # Display EMI details
-    st.write(emi_df[['Order ID', 'Product Name', 'Product Category', 'Price for Customer', 'Order Date', 'Amount Paid', 'Amount Left', 'Interest Paid', 'Interest Left']])
-
-    # Visualizations
-    st.header("EMI Analysis Visualizations")
-
-    emi_df['Full Name'] = emi_df['Order ID'].astype(str) + ' ' + emi_df['Product Name']
-
-    options = st.selectbox(
-        "Select order",
-        emi_df['Full Name'].tolist(),
-        index = 0,
+def display_pendings():
+    # st.title("EMI Analysis")
+    main_choice = option_menu(
+        menu_title="",
+        options=["EMIs" , "Amazon Pay Later"],
+        # icons=["bar-chart-line", "bar-chart-line", "bank"],
+        menu_icon="cast",
+        default_index=0,
+        orientation = "horizontal",
+        styles={
+            "container": {"background-color": "#141920"},
+            "icon": {"color": "orange", "font-size": "25px"},
+            "nav-link": {
+                "font-size": "16px",
+                "text-align": "left",
+                "margin": "0px",
+                "padding": "10px",
+                "color": "white"
+            },
+            "nav-link-selected": {"background-color": "rgba(192,192,192, 0.2)", "color": "#ffffff"},
+        }
     )
+    if main_choice == "EMIs":
+        # Filter EMI orders
+        emi_df = df[df['Payment Method'] == 'EMI'].copy()
 
-    selected_order_id = options.split()[0]
+        if emi_df.empty:
+            st.info("No EMI orders found.")
+            return
 
-    if selected_order_id in emi_df['Order ID'].astype(str).tolist():
-        emi = emi_df[emi_df['Order ID'].astype(str) == selected_order_id].iloc[0]
+        # Calculate EMI details
+        current_date = datetime.now()
+        emi_df['Duration (months)'] = emi_df['Duration (months)'].fillna(0).astype(int)
+        emi_df['Monthly Payment'] = emi_df['Monthly Payment'].fillna(0).astype(float)
+        emi_df['Order Date'] = pd.to_datetime(emi_df['Order Date'])
+        emi_df['Months Passed'] = emi_df['Order Date'].apply(lambda x: (current_date.year - x.year) * 12 + current_date.month - x.month)
 
-        # Grouped bar chart for Amount Paid, Amount Left, Interest Paid, Interest Left
-        fig_grouped_bar = go.Figure(data=[
-            go.Bar(name='Amount Paid', x=['Amount'], y=[emi['Amount Paid']], marker_color='orange'),
-            go.Bar(name='Amount Left', x=['Amount'], y=[emi['Amount Left']], marker_color='white'),
-            go.Bar(name='Interest Paid', x=['Interest'], y=[emi['Interest Paid']], marker_color='lightgreen'),
-            go.Bar(name='Interest Left', x=['Interest'], y=[emi['Interest Left']], marker_color='lightcoral')
-        ])
-        fig_grouped_bar.update_layout(barmode='group', title_text="EMI Amount and Interest Analysis")
-        st.plotly_chart(fig_grouped_bar)
+        emi_df['Amount Paid'] = np.minimum(
+            emi_df['Price for Customer'],
+            emi_df.apply(lambda row: min(row['Months Passed'], row['Duration (months)']) * row['Monthly Payment'], axis=1)
+        )
+        emi_df['Amount Left'] = (emi_df['Price for Customer'] - emi_df['Amount Paid']).clip(lower=0)
+        emi_df['Interest Paid'] = emi_df['Amount Paid'] * (0.1/12 *emi_df['Duration (months)'] )  # Assuming 10% interest rate on amount paid
+        emi_df['Interest Left'] = emi_df['Amount Left'] * (0.1/12 * emi_df['Duration (months)'] )  # Assuming 10% interest rate on amount left
+        emi_df['Amount to be Paid Next Month'] = emi_df.apply(lambda row: row['Amount Left'] / (row['Duration (months)'] - row['Months Passed']) if (row['Duration (months)'] - row['Months Passed']) != 0 else 0, axis=1)
+
+        amountToPay = emi_df['Amount to be Paid Next Month'].sum()
+        st.header(f"Total Amount to be paid next month : {round(amountToPay )}")
+
+        # Display EMI details
+        st.table(emi_df[['Order ID', 'Product Name', 'Product Category', 'Price for Customer', 'Order Date', 'Amount Paid', 'Amount Left', 'Interest Paid', 'Interest Left']])
+
+        # Visualizations
+        st.header("EMI Analysis Visualizations")
+
+        emi_df['Full Name'] = emi_df['Order ID'].astype(str) + ' ' + emi_df['Product Name']
+
+        options = st.selectbox(
+            "Select order",
+            emi_df['Full Name'].tolist(),
+            index = 0,
+        )
+
+        selected_order_id = options.split()[0]
+
+        if selected_order_id in emi_df['Order ID'].astype(str).tolist():
+            emi = emi_df[emi_df['Order ID'].astype(str) == selected_order_id].iloc[0]
+
+            # Grouped bar chart for Amount Paid, Amount Left, Interest Paid, Interest Left
+            fig_grouped_bar = go.Figure(data=[
+                go.Bar(name='Amount Paid', x=['Amount'], y=[emi['Amount Paid']], marker_color='orange'),
+                go.Bar(name='Amount Left', x=['Amount'], y=[emi['Amount Left']], marker_color='white'),
+                go.Bar(name='Interest Paid', x=['Interest'], y=[emi['Interest Paid']], marker_color='lightgreen'),
+                go.Bar(name='Interest Left', x=['Interest'], y=[emi['Interest Left']], marker_color='lightcoral')
+            ])
+            fig_grouped_bar.update_layout(barmode='group', title_text="EMI Amount and Interest Analysis")
+            st.plotly_chart(fig_grouped_bar)
+    elif main_choice == "Amazon Pay Later":
+        current_date = datetime.now()
+        apl_df = df[df['Payment Method'] == 'Amazon Pay Later'].copy()
+
+        if apl_df.empty:
+            st.info("No Amazon Pay Later orders found.")
+            return
+
+        # Calculate apl details
+        current_date = datetime.now()
+        apl_df['Duration (months)'] = apl_df['Duration (months)'].fillna(0).astype(int)
+        apl_df['Monthly Payment'] = apl_df['Monthly Payment'].fillna(0).astype(float)
+        apl_df['Order Date'] = pd.to_datetime(apl_df['Order Date'])
+        apl_df['Months Passed'] = apl_df['Order Date'].apply(lambda x: (current_date.year - x.year) * 12 + current_date.month - x.month)
+
+        apl_df['Amount Paid'] = apl_df.apply(lambda row: min(row['Months Passed'], row['Duration (months)']) * row['Monthly Payment'], axis=1)
+        apl_df['Amount Left'] = apl_df['Price for Customer'] - apl_df['Amount Paid']
+        amountToPay = sum(apl_df["Amount Left"]/(apl_df["Duration (months)"] - apl_df['Months Passed']))
+        st.header(f"Total Amount to be paid next month : {round(amountToPay )}")
+        st.table(apl_df[['Order ID', 'Product Name', 'Product Category', 'Price for Customer', 'Order Date', 'Amount Paid', 'Amount Left']])
+
+
+
 
 
 def sidebar_spend_analysis():
@@ -331,7 +382,7 @@ def savings_analysis():
 def dashboard():
     main_choice = option_menu(
         menu_title="",
-        options=["Spending Analysis", "Saving Analysis", "EMI"],
+        options=["Spending Analysis", "Saving Analysis", "Pendings"],
         icons=["bar-chart-line", "bar-chart-line", "bank"],
         menu_icon="cast",
         default_index=0,
@@ -354,8 +405,8 @@ def dashboard():
         spending_analysis()
     elif main_choice == "Saving Analysis":
         savings_analysis()
-    elif main_choice == "EMI":
-        display_emi_analysis()
+    elif main_choice == "Pendings":
+        display_pendings()
 
 def finance():
     with st.sidebar:
