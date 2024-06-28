@@ -41,7 +41,7 @@ def chat():
         st.markdown("""
             <style>
             .stButton>button {
-                background-color: rgba(255,179,71,1);
+                background-color: white;
                 color: black;
                 border-radius: 20px;
                 font-weight: 200;
@@ -50,7 +50,6 @@ def chat():
                 cursor: pointer;
             }
             .stButton>button :hover{
-                background-color: white;
                 border-radius: 20px;
                 padding: 2px;
                 color: black;    
@@ -139,4 +138,4 @@ def chat():
         st.chat_message("user").markdown(prompt)
         output(prompt)
         
-chat()
+# chat()
